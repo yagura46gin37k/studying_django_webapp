@@ -1,0 +1,26 @@
+{% extends "market/base.html" %}
+{% block content %}
+
+<h2>商品一覧</h2>
+
+<table class="table table-bordered border-dark" style="width: 600px">
+    <thead class="table-active">
+        <tr>
+            <th>商品名</th>
+            <th>単価</th>
+            <th>商品説明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- views.pyでmodel=Goodとしたので、goods_listとしてGoodsのリストが渡される -->
+        {% for goods in goods_list %}
+        <tr>
+            <td>{{ goods.name }}</td>
+            <td>￥{{ goods.price }}</td>
+            <td>{{ goods.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "market/base.html" %}
+{% block content %}
+
+<!-- amountの入力フィールドだけ幅を狭くしておく -->
+<style>
+    .amountfield {
+        width: 80px;
+    }
+</style>
+
+<div>
+<h2>注文する</h2>
+
+<form action="" method="post">
+    {% for form in formset %}
+    <div>
+        {{ form.as_table }}
+    </div>
+    {% endfor %}
+    {{ formset.management_form }}
+    {% csrf_token %}
+    
+    <button type="submit" class="btn btn-primary my-3">送信</button>
+</form>
+
+<div class="my-3">
+    <p>オプション：注文者を一括設定する（要Javascript）</p>
+    <label for="order_name">入力欄</label>
+    <input type="text" id="order_name">
+    <button onClick="setName(0);" class="btn btn-primary">すべて設定</button>
+    <button onClick="setName(1);" class="btn btn-primary">個数指定済みのものに設定</button>
+</div>
+</div>
+
+<!-- エディタの都合でfor文内のテンプレートタグがエラー表記になっているが、機能する -->
+<script>
+    function setName(mode){
+        let name = document.getElementById('order_name');
+        // for文でinput要素をすべて取得し、nameを設定する
+        if(mode == 0) {
+            for(i = 0; i < {{ formset|length }}; i++){
+                document.getElementById('id_form-'+ i + '-ordered_by').value = name.value;
+            }
+        } else if(mode == 1) {
+            //注文数が入力済みの箇所だけnameを設定する
+            for(i = 0; i < {{ formset|length }}; i++){
+                if(document.getElementById('id_form-' + i + '-amount').value != '') {
+                    document.getElementById('id_form-'+ i + '-ordered_by').value = name.value;
+                }
+            }
+        }
+    }
+</script>
+
+{% endblock %}

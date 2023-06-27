@@ -1,0 +1,26 @@
+{% extends "market/base.html" %}
+{% block content %}
+
+{% load extra_tags %}
+<h2>{{ ordered }}の注文詳細</h2>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>商品名</th>
+            <th>個数</th>
+            <th>単価</th>
+            <th>日付</th>
+        </tr>
+    </thead>
+    {% for order in order_list %}
+    <tr>
+        <td>{{ order.goods.name }}</td>
+        <td>{{ order.amount }}個</td>
+        <td>￥{{ order.goods.price | multiply:order.amount }}</td>
+        <td>{{ order.date }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="{% url 'market:order_list' %}">注文者一覧に戻る</a>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+<form action="" method="POST">
+    <table class="table">
+        <tr>
+            <th>{{ form.goods }}</th>
+            <th>{{ form.amount }}</th>
+        </tr>
+    </table>
+    <button type="submit">注文</button>
+    {% csrf_token %}
+</form>

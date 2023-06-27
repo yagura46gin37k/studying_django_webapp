@@ -1,0 +1,17 @@
+{% extends "market/base.html" %}
+{% block content %}
+{% load extra_tags %}
+
+<h2>注文者リスト</h2>
+
+<table class="table">
+    <tbody>
+        {% for order in order_list %}
+        <tr>
+            <td><a href="ordered_list/{{ order.ordered_by }}">{{ order.ordered_by }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
