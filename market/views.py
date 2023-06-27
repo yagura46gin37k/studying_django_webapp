@@ -3,25 +3,9 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.views import generic
-# from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from .models import Goods, Order
 from .forms import OrderCreateFormSet
-
-'''
-# Orderを登録するためのクラスビュー
-class OrderCreateView(generic.CreateView):
-    template_name = 'market/order_new.html'
-    model = Order
-    form_class = OrderCreateForm
-    success_url = reverse_lazy('market:order_list')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # goods_listはGoodsモデルのデータすべてを含むイテレータ
-        context['goods_list'] = Goods.objects.all()
-        return context
-'''
 
 # Orderを複数登録するための関数ビュー
 def add_order(request):
