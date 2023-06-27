@@ -64,7 +64,7 @@ class OrderedListView(generic.ListView):
         return context
 
 # いろいろ試すためのビュー
-class TestView(generic.View):
+class TestView(generic.TemplateView):
     template_name = 'market/testpage.html'
 
     def get_context_data(self, **kwargs):
