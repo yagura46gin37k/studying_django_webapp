@@ -62,4 +62,14 @@ class OrderedListView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['ordered'] = self.kwargs['ordered_by']
         return context
+
+# いろいろ試すためのビュー
+class TestView(generic.View):
+    template_name = 'market/testpage.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        goods_obj = Goods.objects.all()
+        ctx['goods_list'] = goods_obj
+        return ctx
     

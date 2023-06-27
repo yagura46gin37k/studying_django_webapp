@@ -1,0 +1,23 @@
+{% block content %}
+<h3>砂場</h3>
+<form action="" method="POST">
+    <table>
+        <thead>
+            <th>商品名</th>
+            <th>単価</th>
+            <th>個数</th>
+        </thead>
+        <tbody>
+            {% for goods in goods_list %}
+            <tr>
+                <td>{{ goods.name }}</td>
+                <td>￥{{ goods.price }}</td>
+                <td><input type="number"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% csrf_token %}
+</form>
+
+{% endblock %}
