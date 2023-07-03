@@ -22,8 +22,10 @@ def add_order(request):
         return redirect('market:order_list')
     
     # テンプレートに渡すコンテキストを設定
+    # 二つのイテラブルを同じインデックスで参照したいのでzipする
     context = {
-        'formset': formset,
+        'formset': formset, # フォームの個数を|lengthで把握するため
+        'obj_list': zip(formset, Goods.objects.all()),
     }
 
     return render(request, 'market/order_formset.html', context)

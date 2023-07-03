@@ -11,13 +11,32 @@
 <div>
 <h2>注文する</h2>
 
-<!-- formをさらにfor文で分解して配置する -->
 <form action="" method="post">
-    {% for form in formset %}
-    <div>
-        {{ form.as_table }}
-    </div>
-    {% endfor %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>単価</th>
+                <th>個数</th>
+                <th>注文者</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for form, goods in obj_list %}
+            <tr>
+                {% for field in form %}
+                {% if forloop.counter0 == 1 %}
+                <!-- goods_listの内容をformsetのインデックスで参照したい -->
+                <td>￥{{ goods.price }}</td>
+                <td>{{ field }}</td>
+                {% else %}
+                <td>{{ field }}</td>
+                {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {{ formset.management_form }}
     {% csrf_token %}
     
