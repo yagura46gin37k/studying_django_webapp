@@ -22,11 +22,11 @@
             </tr>
         </thead>
         <tbody>
+            <!-- zipされたコンテキストからそれぞれ取り出す -->
             {% for form, goods in obj_list %}
             <tr>
                 {% for field in form %}
                 {% if forloop.counter0 == 1 %}
-                <!-- goods_listの内容をformsetのインデックスで参照したい -->
                 <td>￥{{ goods.price }}</td>
                 <td>{{ field }}</td>
                 {% else %}
