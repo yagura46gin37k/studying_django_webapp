@@ -51,7 +51,6 @@ class GoodsListView(generic.ListView):
 # 注文詳細ビュー
 class OrderedListView(generic.ListView):
     template_name = 'market/ordered_list.html'
-    # model = Order
     context_object_name = 'order_list'
 
     # urlから受け取ったパラメータを使ってOrderをフィルタリング

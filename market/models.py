@@ -45,7 +45,7 @@ class Order(models.Model):
     )
 
     def __str__(self):
-        return '注文' + str(self.date) + ':' + str(self.goods) + '*' + str(self.amount)
+        return str(self.ordered_by) + ': ' + str(self.goods) + '*' + str(self.amount)
     
     class Meta:
         verbose_name = ('注文')
