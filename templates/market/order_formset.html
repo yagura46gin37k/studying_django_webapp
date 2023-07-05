@@ -1,5 +1,6 @@
 {% extends "market/base.html" %}
 {% block content %}
+{% load static %}
 
 <!-- amountの入力フィールドだけ幅を狭くしておく -->
 <style>
@@ -49,6 +50,12 @@
     {% endfor %}
 {% endif %}
 
+<!-- 静的ファイルへコンテキストを渡すため、ここで変数を定義しておく -->
+<script>
+    let formset_count = {{ formset|length|escape|safe }};
+</script>
+<script src="{% static 'market/form_manage.js' %}"></script>
+
 <div class="my-3">
     <p>オプション：注文者を一括設定する（要Javascript）</p>
     <label for="order_name">入力欄</label>
@@ -57,25 +64,5 @@
     <button onClick="setName(1);" class="btn btn-primary">個数指定済みのものに設定</button>
 </div>
 </div>
-
-<!-- エディタの都合でfor文内のテンプレートタグがエラー表記になっているが、機能する -->
-<script>
-    function setName(mode){
-        let name = document.getElementById('order_name');
-        // for文でinput要素をすべて取得し、nameを設定する
-        if(mode == 0) {
-            for(i = 0; i < {{ formset|length }}; i++){
-                document.getElementById('id_form-'+ i + '-ordered_by').value = name.value;
-            }
-        } else if(mode == 1) {
-            //注文数が入力済みの箇所だけnameを設定する
-            for(i = 0; i < {{ formset|length }}; i++){
-                if(document.getElementById('id_form-' + i + '-amount').value != '') {
-                    document.getElementById('id_form-'+ i + '-ordered_by').value = name.value;
-                }
-            }
-        }
-    }
-</script>
 
 {% endblock %}
