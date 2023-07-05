@@ -43,6 +43,12 @@
     <button type="submit" class="btn btn-primary my-3">送信</button>
 </form>
 
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-danger">注文失敗：個数は1以上の値を設定し、個数を設定した欄には注文者も設定してください</div>
+    {% endfor %}
+{% endif %}
+
 <div class="my-3">
     <p>オプション：注文者を一括設定する（要Javascript）</p>
     <label for="order_name">入力欄</label>

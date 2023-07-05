@@ -4,6 +4,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.views import generic
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import Goods, Order
 from .forms import OrderCreateFormSet
 
@@ -17,9 +18,16 @@ def add_order(request):
     )
     
     # 送信ボタンが押された際の処理
-    if request.method == 'POST' and formset.is_valid():
-        formset.save()
-        return redirect('market:order_list')
+    if request.method == 'POST':
+        if formset.is_valid():
+            print('バリデーションOK')
+            formset.save()
+            return redirect('market:order_list')
+        else: # 入力内容に不備がある
+            print('バリデーションNG')
+            err = formset.errors
+            messages.error(request, str(err))
+            return redirect('market:order_formset')
     
     # テンプレートに渡すコンテキストを設定
     # 二つのイテラブルを同じインデックスで参照したいのでzipする
