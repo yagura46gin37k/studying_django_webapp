@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import JsonResponse
 from .models import Goods, Order
 from .forms import OrderCreateFormSet
 
@@ -22,12 +23,19 @@ def add_order(request):
         if formset.is_valid():
             print('バリデーションOK')
             formset.save()
-            return redirect('market:order_list')
+            data = {
+                'result': 'OK',
+                'msg': '注文成功：5秒後にページを切り替えます…',
+            }
+            # return redirect('market:order_list')
+            return JsonResponse(data)
         else: # 入力内容に不備がある
             print('バリデーションNG')
-            err = formset.errors
-            messages.error(request, str(err))
-            return redirect('market:order_formset')
+            data = {
+                'result': 'NG',
+                'msg': '注文失敗：個数は1以上の値を設定し、個数を設定した欄には注文者も設定してください',
+            }
+            return JsonResponse(data)
     
     # テンプレートに渡すコンテキストを設定
     # 二つのイテラブルを同じインデックスで参照したいのでzipする
@@ -37,7 +45,7 @@ def add_order(request):
     }
 
     return render(request, 'market/order_formset.html', context)
- 
+
 # 注文一覧ビュー
 class OrderListView(generic.ListView):
     template_name = 'market/order_list.html'

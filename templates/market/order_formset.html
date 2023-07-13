@@ -12,7 +12,7 @@
 <div>
 <h2>注文する</h2>
 
-<form action="" method="post">
+<form action="" method="post" id="order_formset">
     <table class="table">
         <thead>
             <tr>
@@ -41,18 +41,19 @@
     {{ formset.management_form }}
     {% csrf_token %}
     
-    <button type="submit" class="btn btn-primary my-3">送信</button>
+    <button id="ajax_order_validation" type="submit" class="btn btn-primary my-3">送信</button>
 </form>
 
-{% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-danger">注文失敗：個数は1以上の値を設定し、個数を設定した欄には注文者も設定してください</div>
-    {% endfor %}
-{% endif %}
+<div id="messages">
+    <!-- バリデーションエラー時、ここにメッセージを表示する -->
+</div>
 
-<!-- 静的ファイルへコンテキストを渡すため、ここで変数を定義しておく -->
+<!-- 静的ファイル内ではテンプレートタグを使用できない
+     そこで、静的ファイルを呼び出す前にコンテキストを変数に入れておく -->
 <script>
     let formset_count = {{ formset|length|escape|safe }};
+    let validation_url = "{% url 'market:order_formset' %}";
+    let redirect_url = "{% url 'market:order_list' %}"
 </script>
 <script src="{% static 'market/form_manage.js' %}"></script>
 
