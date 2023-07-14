@@ -36,13 +36,14 @@ const sleep = waitTime => new Promise(resolve => setTimeout(resolve, waitTime));
 
 //order_formset.htmlの送信ボタンを監視
 submit_button.addEventListener('click', e => {  //submitだとpreventdefaultが機能せずにページが遷移してしまう(非同期処理だかららしい)
-    e.preventDefault(); //デフォルトの挙動（ページ遷移）をキャンセル
+    e.preventDefault();                         //デフォルトの挙動（ページ遷移）をキャンセル
     console.log('submit button pressed');
 
     const message_area = document.getElementById('messages'); //メッセージを表示する場所
     const formset_data = new FormData(formset);
     const formset_data_url = new URLSearchParams(formset_data);
-    fetch(validation_url, { //バリデーション用関数へアクセスする
+
+    fetch(validation_url, {
         method: 'POST',
         body: formset_data_url,
         headers: {
@@ -50,12 +51,16 @@ submit_button.addEventListener('click', e => {  //submitだとpreventdefaultが�
             'X-CSRFToken': csrftoken,
         },
     }).then(response => {
-        return response.json(); //サーバ側からの返答をjson形式に
-    }).then(async response => {   //このresponseは直前のthenの返り値(response.json())
+        return response.json();                     //サーバ側からの返答をjson形式に
+    }).then(async response => {                     //このresponseは直前のthenの返り値(response.json())
         if(response.result == 'OK') {
             message_area.insertAdjacentHTML('beforeend', '<div class="alert alert-success">' + response.msg + '</div>');
-            await sleep(5000);  //5秒待機
-            window.location.href = redirect_url;
+            for(i = 0; i < formset_count; i++){     //入力欄を編集不可にする
+                document.getElementById('id_form-'+ i + '-amount').disabled = true;
+                document.getElementById('id_form-'+ i + '-ordered_by').disabled = true;
+            }
+            await sleep(5000);                      //5秒待機
+            window.location.href = redirect_url;    //注文者一覧のページへリダイレクト
         } else if(response.result == 'NG') {
             message_area.insertAdjacentHTML('beforeend', '<div class="alert alert-danger">' + response.msg + '</div>');
         }

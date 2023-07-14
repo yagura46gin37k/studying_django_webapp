@@ -10,60 +10,60 @@
 </style>
 
 <div>
-<h2>注文する</h2>
+    <h2>注文する</h2>
 
-<form action="" method="post" id="order_formset">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>商品名</th>
-                <th>単価</th>
-                <th>個数</th>
-                <th>注文者</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- zipされたコンテキストからそれぞれ取り出す -->
-            {% for form, goods in obj_list %}
-            <tr>
-                {% for field in form %}
-                {% if forloop.counter0 == 1 %}
-                <td>￥{{ goods.price }}</td>
-                <td>{{ field }}</td>
-                {% else %}
-                <td>{{ field }}</td>
-                {% endif %}
+    <form action="" method="post" id="order_formset">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>商品名</th>
+                    <th>単価</th>
+                    <th>個数</th>
+                    <th>注文者</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- zipされたコンテキストからそれぞれ取り出す -->
+                {% for form, goods in obj_list %}
+                <tr>
+                    {% for field in form %}
+                    {% if forloop.counter0 == 1 %}
+                    <td>￥{{ goods.price }}</td>
+                    <td>{{ field }}</td>
+                    {% else %}
+                    <td>{{ field }}</td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
                 {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {{ formset.management_form }}
-    {% csrf_token %}
-    
-    <button id="ajax_order_validation" type="submit" class="btn btn-primary my-3">送信</button>
-</form>
+            </tbody>
+        </table>
+        {{ formset.management_form }}
+        {% csrf_token %}
+        
+        <button id="ajax_order_validation" type="submit" class="btn btn-primary my-3">送信</button>
+    </form>
 
-<div id="messages">
-    <!-- バリデーションエラー時、ここにメッセージを表示する -->
-</div>
+    <div id="messages">
+        <!-- バリデーションエラー時、ここにメッセージを表示する -->
+    </div>
 
-<!-- 静的ファイル内ではテンプレートタグを使用できない
-     そこで、静的ファイルを呼び出す前にコンテキストを変数に入れておく -->
-<script>
-    let formset_count = {{ formset|length|escape|safe }};
-    let validation_url = "{% url 'market:order_formset' %}";
-    let redirect_url = "{% url 'market:order_list' %}"
-</script>
-<script src="{% static 'market/form_manage.js' %}"></script>
+    <!-- 静的ファイル内ではテンプレートタグを使用できない
+        そこで、静的ファイルを呼び出す前にコンテキストを変数に入れておく -->
+    <script>
+        let formset_count = {{ formset|length|escape|safe }};
+        let validation_url = "{% url 'market:order_formset' %}";
+        let redirect_url = "{% url 'market:order_list' %}"
+    </script>
+    <script src="{% static 'market/form_manage.js' %}"></script>
 
-<div class="my-3">
-    <p>オプション：注文者を一括設定する（要Javascript）</p>
-    <label for="order_name">入力欄</label>
-    <input type="text" id="order_name">
-    <button onClick="setName(0);" class="btn btn-primary">すべて設定</button>
-    <button onClick="setName(1);" class="btn btn-primary">個数指定済みのものに設定</button>
-</div>
+    <div class="my-3">
+        <p>オプション：注文者を一括設定する（要Javascript）</p>
+        <label for="order_name">入力欄</label>
+        <input type="text" id="order_name">
+        <button onClick="setName(0);" class="btn btn-primary">すべて設定</button>
+        <button onClick="setName(1);" class="btn btn-primary">個数指定済みのものに設定</button>
+    </div>
 </div>
 
 {% endblock %}
