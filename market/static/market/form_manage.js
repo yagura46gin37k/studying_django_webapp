@@ -54,7 +54,10 @@ submit_button.addEventListener('click', e => {  //submitだとpreventdefaultが�
         return response.json();                     //サーバ側からの返答をjson形式に
     }).then(async response => {                     //このresponseは直前のthenの返り値(response.json())
         if(response.result == 'OK') {
-            message_area.insertAdjacentHTML('beforeend', '<div class="alert alert-success">' + response.msg + '</div>');
+            message_area.insertAdjacentHTML(
+                'beforeend', `<div class="alert alert-success">\
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${response.msg}</div>`
+            );
             for(i = 0; i < formset_count; i++){     //入力欄を編集不可にする
                 document.getElementById('id_form-'+ i + '-amount').disabled = true;
                 document.getElementById('id_form-'+ i + '-ordered_by').disabled = true;
