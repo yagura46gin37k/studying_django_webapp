@@ -27,7 +27,6 @@ def add_order(request):
                 'result': 'OK',
                 'msg': '注文成功：5秒後にページを切り替えます…',
             }
-            # return redirect('market:order_list')
             return JsonResponse(data)
         else: # 入力内容に不備がある
             print('バリデーションNG')
