@@ -53,7 +53,7 @@
     <script>
         let formset_count = {{ formset|length|escape|safe }};
         let validation_url = "{% url 'market:order_formset' %}";
-        let redirect_url = "{% url 'market:order_list' %}"
+        let redirect_url = "{% url 'market:order_list' %}";
     </script>
     <script src="{% static 'market/form_manage.js' %}"></script>
 

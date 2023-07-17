@@ -2,25 +2,39 @@
 {% block content %}
 
 {% load extra_tags %}
+{% load humanize %}
+
 <h2>{{ ordered }}の注文詳細</h2>
-<table class="table table-sm">
+
+<div>
+    商品名でフィルタリング：
+    <select id="goods_select">
+        <option value="すべて" id="all">すべて</option>
+        {% for goods in goods_list %}
+        <option value="{{ goods.name }}" id="{{ goods.id }}">{{ goods.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<table class="table table-sm table-hover mt-4" id="order_table">
     <thead>
         <tr>
-            <th>商品名</th>
-            <th>個数</th>
-            <th>単価</th>
+            <th class="border-end">商品名</th>
+            <th class="border-end text-center">個数</th>
+            <th class="border-end text-center">金額</th>
             <th>日付</th>
         </tr>
     </thead>
     {% for order in order_list %}
     <tr>
-        <td>{{ order.goods.name }}</td>
-        <td>{{ order.amount }}個</td>
-        <td>￥{{ order.goods.price | multiply:order.amount }}</td>
+        <td class="border-end" style="width: 20%">{{ order.goods.name }}</td>
+        <td class="border-end" align="right" style="width: 10%">{{ order.amount | intcomma }}個</td>
+        <td class="border-end" align="right" style="width: 10%">￥{{ order.goods.price | multiply:order.amount | escape | intcomma }}</td>
         <td>{{ order.date }}</td>
     </tr>
     {% endfor %}
 </table>
+
 <a href="{% url 'market:order_list' %}">注文者一覧に戻る</a>
 
 {% endblock %}

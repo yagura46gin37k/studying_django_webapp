@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'market.apps.MarketConfig',
+    'django.contrib.humanize',
 ]
+
+# For humanize
+NUMBER_GROUPING = 3
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

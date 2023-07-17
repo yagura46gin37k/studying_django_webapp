@@ -59,7 +59,7 @@ class GoodsListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Orderモデルを(イテレータとして)すべて取得し、order_listとしてテンプレートに渡す
+        # OrderモデルとGoodsモデルを(イテレータとして)すべて取得し、order_listとしてテンプレートに渡す
         order_obj = Order.objects.all()
         context['order_list'] = order_obj
         return context
@@ -77,7 +77,9 @@ class OrderedListView(generic.ListView):
     # urlから受け取ったパラメータ（注文者の名前）をコンテキストに追加
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        goods_obj = Goods.objects.all()
         context['ordered'] = self.kwargs['ordered_by']
+        context['goods_list'] = goods_obj
         return context
 
 # いろいろ試すためのビュー
