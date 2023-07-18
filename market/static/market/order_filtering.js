@@ -33,7 +33,7 @@ goods_list.addEventListener('change', e => {
     }).then(response => {
         //TODO: 受け取ったデータを使って表を書き換える処理
         //受け取ったデータを変数に格納
-        const goods_list = response.goods_list;
+        const order_list = response.order_list;
         //table要素を取得し、ヘッダ以外の行を削除
         let table = document.getElementById('order_table');
         while(table.rows.length > 1) {

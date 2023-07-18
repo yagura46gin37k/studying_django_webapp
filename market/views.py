@@ -81,15 +81,22 @@ class OrderedListView(generic.ListView):
         context['goods_list'] = goods_obj
         return context
     
-    # TODO javascript側からのPOST送信をもとにフィルタしたgoodsのリストをjsonで返す関数
-    def post(self, request):
+    # TODO javascript側からのPOST送信をもとにフィルタしたorderのリストをjsonで返す関数
+    def post(self, request, **kwargs):
         print('goods_id posted')
 
         goods_id = request.POST.get('goods_id')
-        
+        ordered = self.kwargs['ordered_by']
+        order_list = Order.objects.filter(ordered_by=ordered)
+
+        # 「すべて」が選択されていない時だけ追加でorder_listをフィルタリング
+        if goods_id != 'all':
+            order_list = order_list.filter(goods = Goods.objects.get(id = goods_id))
+
         # jsonデータを作成して返す
+        order_list = list(order_list.values())
         data = {
-            'goods_list': 'testdata',
+            'order_list': order_list,
         }
         return JsonResponse(data)
 
