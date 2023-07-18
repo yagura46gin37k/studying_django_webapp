@@ -81,7 +81,8 @@ class OrderedListView(generic.ListView):
         context['goods_list'] = goods_obj
         return context
     
-    # TODO javascript側からのPOST送信をもとにフィルタしたorderのリストをjsonで返す関数
+    # javascript側からのPOST送信をもとにフィルタしたorderのリストをjsonで返す関数
+    # なお、現在は使用されていない
     def post(self, request, **kwargs):
         print('goods_id posted')
 
