@@ -80,6 +80,18 @@ class OrderedListView(generic.ListView):
         context['ordered'] = self.kwargs['ordered_by']
         context['goods_list'] = goods_obj
         return context
+    
+    # TODO javascript側からのPOST送信をもとにフィルタしたgoodsのリストをjsonで返す関数
+    def post(self, request):
+        print('goods_id posted')
+
+        goods_id = request.POST.get('goods_id')
+        
+        # jsonデータを作成して返す
+        data = {
+            'goods_list': 'testdata',
+        }
+        return JsonResponse(data)
 
 # いろいろ試すためのビュー
 class TestView(generic.TemplateView):
