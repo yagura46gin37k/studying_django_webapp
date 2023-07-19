@@ -11,8 +11,8 @@ const getCookie = name => {
 };
 const csrftoken = getCookie('csrftoken');
 
+//プルダウンメニューの変更を監視
 const goods_list = document.getElementById('goods_select');
-
 goods_list.addEventListener('change', e => {
     //選択された文字列を取得
     const goods_name = goods_list[goods_list.selectedIndex].text;
@@ -68,3 +68,17 @@ goods_list.addEventListener('change', e => {
     });
     */
 });
+
+//tableの表示行のチェックボックスをまとめてチェックする関数
+function allCheck() {
+    //table要素を取得
+    const table = document.getElementById('order_table');
+    //table-row状態の行のみチェックする
+    for(let i = 1; i < table.rows.length; i++) {
+        if(table.rows[i].style.display == 'table-row') {    //ここが怪しい
+            document.getElementById('delete_order_' + i).checked == true;
+        }
+    }
+}
+let all_check_btn = document.getElementById('all-check-btn');
+all_check_btn.addEventListener('click', allCheck);

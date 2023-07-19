@@ -15,6 +15,7 @@
         <option value="{{ goods.name }}" id="{{ goods.id }}">{{ goods.name }}</option>
         {% endfor %}
     </select>
+    <button id="all-check-btn" class="btn btn-primary">すべてチェック</button>
 </div>
 
 <table class="table table-sm table-hover border-top mt-4" id="order_table">
@@ -31,11 +32,11 @@
         <td class="border-end" style="width: 20%">
             <input 
                 type="checkbox"
-                id="delete_order_{{ order.id }}"
+                id="delete_order_{{ forloop.counter }}"
                 name="delete_order"
                 value="{{ order.id }}"
             />
-            <label for="delete_order_{{ order.id }}">{{ order.goods.name }}</label>
+            <label for="delete_order_{{ forloop.counter }}">{{ order.goods.name }}</label>
         </td>
         <td class="border-end" align="right" style="width: 10%">{{ order.amount | intcomma }}個</td>
         <td class="border-end" align="right" style="width: 10%">￥{{ order.goods.price | multiply:order.amount | escape | intcomma }}</td>
@@ -46,6 +47,6 @@
 
 <a href="{% url 'market:order_list' %}">注文者一覧に戻る</a>
 
-<script src="{% static 'market/order_filtering.js' %}"></script>
+<script src="{% static 'market/order_manage.js' %}"></script>
 
 {% endblock %}
