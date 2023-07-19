@@ -28,7 +28,15 @@
     </thead>
     {% for order in order_list %}
     <tr>
-        <td class="border-end" style="width: 20%">{{ order.goods.name }}</td>
+        <td class="border-end" style="width: 20%">
+            <input 
+                type="checkbox"
+                id="delete_order_{{ order.id }}"
+                name="delete_order"
+                value="{{ order.id }}"
+            />
+            <label for="delete_order_{{ order.id }}">{{ order.goods.name }}</label>
+        </td>
         <td class="border-end" align="right" style="width: 10%">{{ order.amount | intcomma }}個</td>
         <td class="border-end" align="right" style="width: 10%">￥{{ order.goods.price | multiply:order.amount | escape | intcomma }}</td>
         <td>　{{ order.date }}</td>
