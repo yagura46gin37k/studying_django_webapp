@@ -35,38 +35,6 @@ goods_list.addEventListener('change', e => {
             }
         }
     }
-
-    //わざわざDBにアクセスする必要が無かった　無念
-    /*
-    //そのidを取得
-    const selected_goods_id = goods_list[selected_goods_index].id;
-    //fetchでidをもとに絞り込んだデータを取得し、表を書き換える
-    const url = location.href;
-    fetch(url, {
-        method: 'POST',
-        body: `goods_id=${selected_goods_id}`,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-            'X-CSRFToken': csrftoken,
-        },
-    }).then(response => {
-        return response.json();
-    }).then(response => {
-        //TODO: 受け取ったデータを使って表を書き換える処理
-        //受け取ったデータを変数に格納
-        const order_list = response.order_list;
-        console.log(order_list);
-        //table要素を取得し、ヘッダ以外の行を削除
-        let table = document.getElementById('order_table');
-        while(table.rows.length > 1) {
-            table.deleteRow(1);
-        }
-        //受け取ったデータをもとに表を作り直す
-
-    }).catch(error => {
-        console.log(error);
-    });
-    */
 });
 
 //tableの表示行のチェックボックスをまとめてチェックする関数
@@ -75,10 +43,53 @@ function allCheck() {
     const table = document.getElementById('order_table');
     //table-row状態の行のみチェックする
     for(let i = 1; i < table.rows.length; i++) {
-        if(table.rows[i].style.display == 'table-row') {    //ここが怪しい
+        if(table.rows[i].style.display == 'table-row') {
             document.getElementById('delete_order_' + i).checked = true;
         }
     }
 }
+
+//「すべてチェック」ボタンを監視
 let all_check_btn = document.getElementById('all-check-btn');
-all_check_btn.addEventListener('click', allCheck);
+all_check_btn.addEventListener('click', e => {
+    e.preventDefault();
+    allCheck();
+});
+
+const sleep = waitTime => new Promise(resolve => setTimeout(resolve, waitTime));    //waitTimeミリ秒だけ待機する関数
+
+//「注文を取り消す」ボタンを監視
+const delete_order_btn = document.getElementById('delete_order_btn');
+delete_order_btn.addEventListener('click', e => {
+    e.preventDefault();
+    console.log('delete button pressed');
+
+    const msg_area = document.getElementById('delete_msg');
+    const formdata = new FormData(document.getElementById('delete_order_form'));
+    const formdata_url = new URLSearchParams(formdata);
+    const url = location.href;
+
+    //現在のページにチェック済み項目をPOSTする
+    fetch(url, {
+        method: 'POST',
+        body: formdata_url,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+            'X-CSRFToken': csrftoken,
+        },
+    }).then(response => {
+        return response.json();
+    }).then(async response => {
+        if(response.result == 'OK') {
+            msg_area.insertAdjacentHTML(
+                'beforeend', `<div class="alert alert-success">\
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${response.msg}</div>`
+            );
+            delete_order_btn.disabled = true;   //ボタンを無効化
+            await sleep(3000);  //3秒待機
+            window.location.href = location.href; //ページを更新
+        }
+    }).catch(error => {
+        console.log(error);
+    });
+});

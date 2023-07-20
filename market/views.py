@@ -3,8 +3,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.views import generic
-from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Goods, Order
 from .forms import OrderCreateFormSet
@@ -81,23 +80,17 @@ class OrderedListView(generic.ListView):
         context['goods_list'] = goods_obj
         return context
     
-    # javascript側からのPOST送信をもとにフィルタしたorderのリストをjsonで返す関数
-    # なお、現在は使用されていない
+    # javascript側からのPOST送信をもとに該当するOrderのデータを削除する
     def post(self, request, **kwargs):
-        print('goods_id posted')
-
-        goods_id = request.POST.get('goods_id')
-        ordered = self.kwargs['ordered_by']
-        order_list = Order.objects.filter(ordered_by=ordered)
-
-        # 「すべて」が選択されていない時だけ追加でorder_listをフィルタリング
-        if goods_id != 'all':
-            order_list = order_list.filter(goods = Goods.objects.get(id = goods_id))
-
-        # jsonデータを作成して返す
-        order_list = list(order_list.values())
+        print('order id posted')
+        # リスト形式で削除対象Orderのidを取得
+        id_list = request.POST.getlist('delete_order')
+        print(id_list)
+        for id in id_list:
+            Order.objects.get(id=id).delete()
         data = {
-            'order_list': order_list,
+            'result': 'OK',
+            'msg': 'データの削除が完了しました。ページを更新します…',
         }
         return JsonResponse(data)
 
