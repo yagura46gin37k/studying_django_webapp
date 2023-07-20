@@ -28,7 +28,7 @@ goods_list.addEventListener('change', e => {
     //それ以外を選んだ場合は先頭行と選んだgoodsの行を表示し、ほかを非表示に
     } else {
         for(let i = 1; i < table.rows.length; i++) {
-            if(table.rows[i].cells[0].innerText == goods_name){
+            if(table.rows[i].cells[0].innerText.trim() == goods_name){
                 table.rows[i].style.display = 'table-row';
             } else {
                 table.rows[i].style.display = 'none';
@@ -76,7 +76,7 @@ function allCheck() {
     //table-row状態の行のみチェックする
     for(let i = 1; i < table.rows.length; i++) {
         if(table.rows[i].style.display == 'table-row') {    //ここが怪しい
-            document.getElementById('delete_order_' + i).checked == true;
+            document.getElementById('delete_order_' + i).checked = true;
         }
     }
 }
